@@ -1,0 +1,1 @@
+This is the final project repository for CSYE7374 Design Pattern course.
