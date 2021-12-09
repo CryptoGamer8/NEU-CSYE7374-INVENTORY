@@ -29,7 +29,7 @@ import edu.neu.csye7374.Personnel.Personnel;
  */
 
 public class Demo {
-    public static void main(String[] args) {
+    public static void demo() {
         Inventory inventory = Inventory.getInstance();
         inventory.clearAll();
         ItemFactory factory = ItemFactory.getInstance();
@@ -40,19 +40,19 @@ public class Demo {
         System.out.println(inventory.trackItem(1));
         inventory.deleteItem(1);
         inventory.updateItem(1,item2);
-//        System.out.println(inventory.getItemAll());
+        System.out.println(inventory.getItemAll());
 
-//        Personnel personnel = Personnel.getInstance();
-//        personnel.clearAll();
-//        PersonFactory factory = PersonFactory.getInstance();
-//        Employee e1 = factory.produceEmployee(1,30,"John",20000.0,"2021-11-20");
-//        Employee e2 = factory.produceEmployee(2,30,"Peter",40000.0,"2020-11-20");
-//        personnel.appendEmployee(e1);
-//        personnel.appendEmployee(e2);
-//        personnel.deleteEmployee(2);
-//        personnel.updateEmployee(1,e2);
-//        System.out.println(personnel.getEmployee(1));
-//        System.out.println(personnel.getAllEmployee());
+        Personnel personnel = Personnel.getInstance();
+        personnel.clearAll();
+        PersonFactory personFactory = PersonFactory.getInstance();
+        Employee e1 = personFactory.produceEmployee(1,30,"John",20000.0,"2021-11-20");
+        Employee e2 = personFactory.produceEmployee(2,30,"Peter",40000.0,"2020-11-20");
+        personnel.appendEmployee(e1);
+        personnel.appendEmployee(e2);
+        personnel.deleteEmployee(2);
+        personnel.updateEmployee(1,e2);
+        System.out.println(personnel.getEmployee(1));
+        System.out.println(personnel.getAllEmployee());
 
         TodayDate tdate = new TodayDate();
         TrackExp trackExp = new TrackExp();
@@ -64,14 +64,14 @@ public class Demo {
         System.out.println(trackExp.getAllExpItem());
         System.out.println(annualReview.alertAnnualReview());
 
-//        Order order = Order.getInstance();
-//        order.clearAll();
-//        InvoiceFactory factory = InvoiceFactory.getInstance();
-//        InvoiceAPI invoice1 = factory.produceInvoice(1,1,1,1,"2020-12-20");
-//        InvoiceAPI invoice2 = factory.produceInvoice(2,2,2,2,"2020-12-20");
-//        order.appendInvoice(invoice1);
-//        order.deleteInvoice(1);
-//        order.updateInvoice(1,invoice2);
-//        System.out.println(order.getAllInvoice());
+        Order order = Order.getInstance();
+        order.clearAll();
+        InvoiceFactory invoiceFactory = InvoiceFactory.getInstance();
+        InvoiceAPI invoice1 = invoiceFactory.produceInvoice(1,1,1,1,"2020-12-20");
+        InvoiceAPI invoice2 = invoiceFactory.produceInvoice(2,2,2,2,"2020-12-20");
+        order.appendInvoice(invoice1);
+        order.deleteInvoice(1);
+        order.updateInvoice(1,invoice2);
+        System.out.println(order.getAllInvoice());
     }
 }
