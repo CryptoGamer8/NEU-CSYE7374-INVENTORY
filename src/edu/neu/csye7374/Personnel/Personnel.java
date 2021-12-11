@@ -61,7 +61,7 @@ public class Personnel implements PersonnelAPI{
             while ((line = br.readLine()) != null) {
                 String[] arr = line.split(",");
                 if(Integer.parseInt(arr[0])==id){
-                    Employee employee = factory.produceEmployee(id,Integer.parseInt(arr[1]),arr[2], Double.parseDouble(arr[3]),arr[4]);
+                    Employee employee = factory.produceEmployeeFromFile(id,Integer.parseInt(arr[1]),arr[2], Double.parseDouble(arr[3]),arr[4]);
                     return employee;
                 }
             }
@@ -84,7 +84,7 @@ public class Personnel implements PersonnelAPI{
         try {
             while ((line = br.readLine()) != null) {
                 String[] arr = line.split(",");
-                Employee employee = factory.produceEmployee(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]), arr[2], Double.parseDouble(arr[3]), arr[4]);
+                Employee employee = factory.produceEmployeeFromFile(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]), arr[2], Double.parseDouble(arr[3]), arr[4]);
                 list.add(employee);
             }
         } catch (Exception e) {

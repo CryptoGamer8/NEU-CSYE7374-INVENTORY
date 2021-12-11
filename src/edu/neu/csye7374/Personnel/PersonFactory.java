@@ -2,9 +2,7 @@ package edu.neu.csye7374.Personnel;
 
 public class PersonFactory {
     private static PersonFactory factory;
-
     private PersonFactory(){
-
     }
 
     public static PersonFactory getInstance(){
@@ -17,11 +15,16 @@ public class PersonFactory {
     // Date format should be exactly as "xxxx-xx-xx"
     public Employee produceEmployee(int id, int age, String name, double wage, String hireDate){
         Employee employee = new Employee();
-        employee.setId(id);
-        employee.setAge(age);
-        employee.setName(name);
-        employee.setWage(wage);
-        employee.setHireDate(hireDate);
+        if (validationCheck(id)) {
+            employee.setId(id);
+            employee.setAge(age);
+            employee.setName(name);
+            employee.setWage(wage);
+            employee.setHireDate(hireDate);
+        } else {
+            employee.setId(-1);
+        }
+
         return employee;
     }
 
@@ -31,5 +34,28 @@ public class PersonFactory {
         client.setAge(age);
         client.setName(name);
         return null;
+    }
+
+    protected Employee produceEmployeeFromFile(int id, int age, String name, double wage, String hireDate){
+        Employee employee = new Employee();
+        employee.setId(id);
+        employee.setAge(age);
+        employee.setName(name);
+        employee.setWage(wage);
+        employee.setHireDate(hireDate);
+        return employee;
+    }
+
+    private boolean validationCheck(int employeeId) {
+        Personnel personnel = Personnel.getInstance();
+        boolean noEmployee = true;
+        for (PersonAPI p : personnel.getAllEmployee()) {
+            if (p.getId() == employeeId) {
+                System.out.println(p.getId());
+                noEmployee = false;
+                break;
+            }
+        }
+        return noEmployee;
     }
 }

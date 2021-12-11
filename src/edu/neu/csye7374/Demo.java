@@ -36,11 +36,16 @@ public class Demo {
         ItemAPI item1 = factory.produceItem(1,"Cup","2012-09-30","2021-12-02",10.0,"Boston");
         ItemAPI item2 = factory.produceItem(2,"Tissue","2012-09-30","2025-08-10",5.0,"New York");
         inventory.appendItem(item1);
+        inventory.appendItem(item2);
+        ItemAPI item3 = factory.produceItem(2,"aaa","2013-09-30","2024-08-10",5.0,"New York");
+        if (item3.getId() == -1) {
+            System.out.println("id of item3 is already exist");
+        }
         inventory.addLocationToItem(1,"New York");
         System.out.println(inventory.trackItem(1));
-        inventory.deleteItem(1);
-        inventory.updateItem(1,item2);
-        System.out.println(inventory.getItemAll());
+//        inventory.deleteItem(1);
+//        inventory.updateItem(1,item2);
+//        System.out.println(inventory.getItemAll());
 
         Personnel personnel = Personnel.getInstance();
         personnel.clearAll();
@@ -49,9 +54,9 @@ public class Demo {
         Employee e2 = personFactory.produceEmployee(2,30,"Peter",40000.0,"2020-11-20");
         personnel.appendEmployee(e1);
         personnel.appendEmployee(e2);
-        personnel.deleteEmployee(2);
-        personnel.updateEmployee(1,e2);
-        System.out.println(personnel.getEmployee(1));
+//        personnel.deleteEmployee(2);
+//        personnel.updateEmployee(1,e2);
+//        System.out.println(personnel.getEmployee(1));
         System.out.println(personnel.getAllEmployee());
 
         TodayDate tdate = new TodayDate();
