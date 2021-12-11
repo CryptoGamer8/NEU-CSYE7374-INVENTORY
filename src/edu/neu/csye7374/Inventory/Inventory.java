@@ -61,7 +61,7 @@ public class Inventory implements InventoryAPI{
             while ((line = br.readLine()) != null) {
                 String[] arr = line.split(",");
                 if(Integer.parseInt(arr[0])==id){
-                    ItemAPI item = factory.produceItem(id,arr[1],arr[2],arr[3],Double.parseDouble(arr[4]),arr[5]);
+                    ItemAPI item = factory.produceItemFromFile(id,arr[1],arr[2],arr[3],Double.parseDouble(arr[4]),arr[5]);
                     return item;
                 }
             }
@@ -83,7 +83,7 @@ public class Inventory implements InventoryAPI{
         try {
             while ((line = br.readLine()) != null) {
                 String[] arr = line.split(",");
-                ItemAPI item = factory.produceItem(Integer.parseInt(arr[0]), arr[1], arr[2], arr[3],Double.parseDouble(arr[4]),arr[5]);
+                ItemAPI item = factory.produceItemFromFile(Integer.parseInt(arr[0]), arr[1], arr[2], arr[3],Double.parseDouble(arr[4]),arr[5]);
                 list.add(item);
             }
         } catch (Exception e) {

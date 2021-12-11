@@ -4,7 +4,6 @@ public class ItemFactory {
     private static ItemFactory factory;
 
     private ItemFactory(){
-
     }
 
     public static ItemFactory getInstance(){
@@ -16,6 +15,21 @@ public class ItemFactory {
 
     public ItemAPI produceItem(int id, String name, String PD, String Exp, double price, String location){
         ItemAPI item = new Item();
+        if (validationCheck(id)) {
+            item.setId(id);
+            item.setName(name);
+            item.setPD(PD);
+            item.setExp(Exp);
+            item.setPrice(price);
+            item.setLocation(location);
+        } else {
+            item.setId(-1);
+        }
+        return item;
+    }
+
+    protected ItemAPI produceItemFromFile(int id, String name, String PD, String Exp, double price, String location){
+        ItemAPI item = new Item();
         item.setId(id);
         item.setName(name);
         item.setPD(PD);
@@ -23,5 +37,18 @@ public class ItemFactory {
         item.setPrice(price);
         item.setLocation(location);
         return item;
+    }
+
+    private boolean validationCheck(int itemId) {
+        Inventory inventory = Inventory.getInstance();
+        boolean noItem = true;
+        for (ItemAPI i : inventory.getItemAll()) {
+            if (i.getId() == itemId) {
+                System.out.println(i.getId());
+                noItem = false;
+                break;
+            }
+        }
+        return noItem;
     }
 }
