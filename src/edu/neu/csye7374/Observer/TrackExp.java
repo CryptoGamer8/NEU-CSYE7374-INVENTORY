@@ -23,13 +23,19 @@ public class TrackExp implements Observer{
         List<ItemAPI> list = inventory.getItemAll();
         List<ItemAPI> res = new ArrayList<>();
         for(ItemAPI item:list){
-            if(withinOneMonth(item.getExp(), date)){
+            if(withinOneMonth(date, item.getExp())){
                 res.add(item);
             }
         }
         return res;
     }
 
+    /**
+     * s2 - 30d <= s1 <= s2, return true
+     * @param s1
+     * @param s2
+     * @return
+     */
     private boolean withinOneMonth(String s1, String s2){
         String[] s1_arr = s1.split("-");
         int y1 = Integer.parseInt(s1_arr[0]);
