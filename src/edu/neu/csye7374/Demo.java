@@ -14,22 +14,6 @@ import edu.neu.csye7374.Personnel.Personnel;
 
 import java.time.LocalDate;
 
-/**
-  * 存在问题 - （future enhancements)
- * Date format: "xxxx-xx-xx"
- * File: create three file first "personnel.csv", "order.csv", "inventory.csv"
- * Id: 要自己手动输入，查询或删除不存在的id可能会出错. 没有验证。
- *
- * Design pattern used:
- * Singleton, factory, façade, observer, MVC
- *
- * GUI 可用 API 查看:
- * InventoryAPI, OrderAPI, PersonnelAPI, Observer包下的代码, 以及factory produce API
- *
- * To do list:
- * GUI, UML, ppt, presentation, test
- */
-
 public class Demo {
     public static void demo() {
         Inventory inventory = Inventory.getInstance(); // Singleton pattern.
