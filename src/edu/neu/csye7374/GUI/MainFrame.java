@@ -114,8 +114,10 @@ public class MainFrame extends JFrame {
         // order
         order = Order.getInstance();
         invoiceFactory = InvoiceFactory.getInstance();
+        invoiceListModel = new DefaultListModel<>();
         inventoryListOrder.setModel(itemListModel);
-//        initInvoiceList();
+        invoiceList.setModel(invoiceListModel);
+        initInvoiceList();
 
         // set frame
         setContentPane(MainContainer);
