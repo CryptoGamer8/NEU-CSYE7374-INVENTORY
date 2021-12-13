@@ -280,7 +280,7 @@ public class MainFrame extends JFrame {
                     String[] temp = val.split(": ");
                     int itemID = Integer.parseInt(temp[0]);
                     ItemAPI item = inventory.getItem(itemID);
-                    populateItem(item);
+                    populateOrderItem(item);
 //                    deleteButtonInvoice.setEnabled(true);
 //                    saveButtonInvoice.setEnabled(true);
 //                    createButtonInvoice.setEnabled(false);
@@ -347,7 +347,7 @@ public class MainFrame extends JFrame {
 
             }
         });
-        
+
         deleteButtonInvoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -401,6 +401,13 @@ public class MainFrame extends JFrame {
         }else{
             itemDestination.setText("");
         }
+    }
+
+    private void populateOrderItem(ItemAPI item) {
+        itemIDOrder.setText(String.valueOf(item.getId()));
+        itemNameOrder.setText(item.getName());
+        itemPriceOrder.setText(String.valueOf(item.getPrice()));
+
     }
     private void initInvoiceList(){
         invoiceListModel.removeAllElements();
