@@ -53,6 +53,21 @@ public class MainFrame extends JFrame {
     private JButton saveButtonItem;
     private JLabel status;
     private JButton newButtonItem;
+    private JButton deleteButtonInvoice;
+    private JButton updateButtonInvoice;
+    private JButton newButtonInvoice;
+    private JButton allButtonInvoice;
+    private JList inventoryListOrder;
+    private JList invoiceList;
+    private JTextField itemIDOrder;
+    private JTextField itemNameOrder;
+    private JTextField itemPriceOrder;
+    private JLabel invoiceStatus;
+    private JTextField textField1;
+    private JTextField textField2;
+    private JTextField textField3;
+    private JButton button1;
+    private JButton button2;
     // data related fields
     private DefaultListModel<String> itemListModel;
     private Inventory inventory;
