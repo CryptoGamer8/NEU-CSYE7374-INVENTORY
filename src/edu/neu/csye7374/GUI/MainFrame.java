@@ -53,6 +53,18 @@ public class MainFrame extends JFrame {
     private JButton saveButtonItem;
     private JLabel status;
     private JButton newButtonItem;
+    private JButton deleteButtonEmp;
+    private JButton alertButtonEmp;
+    private JButton newButtonEmp;
+    private JList<String> employeeList;
+    private JButton createButtonEmp;
+    private JButton saveButtonEmp;
+    private JTextField empID;
+    private JTextField empAge;
+    private JTextField empName;
+    private JTextField empWage;
+    private JTextField empHireDate;
+    private JLabel empStatus;
     // data related fields
     private DefaultListModel<String> itemListModel;
     private Inventory inventory;
@@ -60,10 +72,12 @@ public class MainFrame extends JFrame {
     private List<ItemAPI> items;
     private List<ItemAPI> expItems;
     private boolean itemAlert = false;
-    private DefaultListModel employeeListModel;
+    private DefaultListModel<String> employeeListModel;
     private Personnel personnel;
     private PersonFactory personFactory;
     private List<Employee> employees;
+    private List<Employee> expEmployees;
+    private boolean employeeAlert = false;
     private TodayDate tdate;
     private TrackExp trackExp;
     private AnnualReview annualReview;
@@ -85,6 +99,9 @@ public class MainFrame extends JFrame {
         // personnel
         personnel = Personnel.getInstance();
         personFactory = PersonFactory.getInstance();
+        employeeListModel = new DefaultListModel<>();
+        employeeList.setModel(employeeListModel);
+        initEmpList();
 
         // alert
         tdate = new TodayDate();
@@ -94,6 +111,7 @@ public class MainFrame extends JFrame {
         tdate.register(annualReview);
         tdate.setDate(LocalDate.now().toString());
         expItems = trackExp.getAllExpItem();
+        expEmployees = annualReview.alertAnnualReview();
 
         // order
         order = Order.getInstance();
@@ -101,7 +119,7 @@ public class MainFrame extends JFrame {
 
         // set frame
         setContentPane(MainContainer);
-        setTitle("Medical Bill");
+        setTitle("Business Management Tool");
         setSize(1000, 750);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
@@ -249,6 +267,105 @@ public class MainFrame extends JFrame {
                 }
             }
         });
+        employeeList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                String val = employeeList.getSelectedValue();
+                if(val != null){
+                    String[] temp = val.split(": ");
+                    int employeeID = Integer.parseInt(temp[0]);
+                    Employee employee = personnel.getEmployee(employeeID);
+                    populateEmployee(employee);
+                    deleteButtonEmp.setEnabled(true);
+                    saveButtonEmp.setEnabled(true);
+                    createButtonEmp.setEnabled(false);
+                }else{
+                    clearEmployeeFields();
+                    deleteButtonEmp.setEnabled(false);
+                    saveButtonEmp.setEnabled(false);
+                    createButtonEmp.setEnabled(true);
+                }
+            }
+        });
+        deleteButtonEmp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String val = employeeList.getSelectedValue();
+                int idx = employeeList.getSelectedIndex();
+                if(val != null){
+                    String[] temp = val.split(": ");
+                    int employeeID = Integer.parseInt(temp[0]);
+                    personnel.deleteEmployee(employeeID);
+                    clearEmployeeFields();
+                    employeeListModel.remove(idx);
+                    empStatus.setText("Delete Success!");
+                }
+            }
+        });
+        saveButtonEmp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Employee employee = validateEmployee(false);
+                if(employee != null && employee.getId() != -1){
+                    int id = employee.getId();
+                    personnel.updateEmployee(id, employee);
+                    initEmpList();
+                    empStatus.setText("Update Success!");
+                }
+            }
+        });
+        createButtonEmp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Employee employee = validateEmployee(true);
+                if(employee != null && employee.getId() != -1){
+                    personnel.appendEmployee(employee);
+                    initEmpList();
+                    empStatus.setText("Create Success!");
+                }
+            }
+        });
+        newButtonEmp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                employeeList.clearSelection();
+            }
+        });
+        employeeList.setCellRenderer(new DefaultListCellRenderer(){
+            @Override
+            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if(value != null && employeeAlert){
+                    boolean exped = false;
+                    String[] temp = value.toString().split(": ");
+                    int employeeID = Integer.parseInt(temp[0]);
+                    for(Employee expEmployee : expEmployees){
+                        if(expEmployee.getId() == employeeID){
+                            exped = true;
+                            break;
+                        }
+                    }
+                    if(exped){
+                        c.setBackground(Color.RED);
+                    }
+                }
+
+                return c;
+            }
+        });
+        alertButtonEmp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                expEmployees = annualReview.alertAnnualReview();
+                employeeAlert = !employeeAlert;
+                employeeList.updateUI();
+                if(employeeAlert){
+                    empStatus.setText("Today's date: " + LocalDate.now().toString());
+                }else{
+                    empStatus.setText("Result of your actions");
+                }
+            }
+        });
     }
 
     //====================== helper functions =======================//
@@ -325,5 +442,59 @@ public class MainFrame extends JFrame {
         itemPrice.setText("");
         itemDestination.setText("");
         itemLocation.setText("");
+    }
+
+    private void initEmpList() {
+        employeeListModel.removeAllElements();
+        employees = personnel.getAllEmployee();
+        for(Employee employee : employees) {
+            System.out.println("adding" + employee.getName());
+            employeeListModel.addElement(employee.getId() + ": " + employee.getName());
+        }
+    }
+
+    private void populateEmployee(Employee employee) {
+        empID.setText(String.valueOf(employee.getId()));
+        empAge.setText(String.valueOf(employee.getAge()));
+        empName.setText(employee.getName());
+        empWage.setText(String.valueOf(employee.getWage()));
+        empHireDate.setText(employee.getHireDate());
+    }
+
+    private Employee validateEmployee(boolean ifCreate){
+        try {
+            int id = Integer.parseInt(empID.getText());
+            int age = Integer.parseInt(empAge.getText());
+            String name = empName.getText();
+            double wage = Double.parseDouble(empWage.getText());
+            String hireDate = empHireDate.getText();
+            boolean hdCheck = Pattern.compile(datePattern).matcher(hireDate).matches();
+            if(!hdCheck) throw new Exception("Hire Date format wrong");
+            // differentiate editing and creating
+            if(ifCreate){
+                return personFactory.produceEmployee(id, age, name, wage, hireDate);
+            }else {
+                Employee employee = new Employee();
+                employee.setId(id);
+                employee.setName(name);
+                employee.setAge(age);
+                employee.setWage(wage);
+                employee.setHireDate(hireDate);
+                return employee;
+            }
+
+        }catch(Exception e){
+            empStatus.setText(e.getMessage());
+            System.out.println("Error!" + e.getMessage());
+            return null;
+        }
+    }
+
+    private void clearEmployeeFields(){
+        empID.setText("");
+        empName.setText("");
+        empAge.setText("");
+        empWage.setText("");
+        empHireDate.setText("");
     }
 }
