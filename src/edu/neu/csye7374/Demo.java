@@ -52,9 +52,12 @@ public class Demo {
         AnnualReview annualReview = new AnnualReview(); // Observer
         tdate.register(trackExp);
         tdate.register(annualReview);
-        tdate.setDate("2021-12-02");
-//
-        System.out.println(trackExp.getAllExpItem());
+        tdate.setDate("2021-12-14");
+ 		// It will alart all the item that is approaching the expire date (within 1 mounth)
+		// For example, if the expire date is 2021-12-31, it will alert betweem 2021-12-01 to 2021-12-31
+        System.out.println(trackExp.getAllExpItem()); 
+		// It will alart all the employee that is approaching the hire date (within 1 mounth, neglect year)
+		// For example, if the hire date is 2020-12-31, it will alert betweem xxxx-12-01 to xxxx-12-31
         System.out.println(annualReview.alertAnnualReview());
         System.out.println("-------------------------------------------------------------");
 

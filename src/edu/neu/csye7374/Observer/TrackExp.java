@@ -17,7 +17,9 @@ public class TrackExp implements Observer{
     public void update(String date) {
         this.date = date;
     }
-
+	
+	// It will alart all the item that is approaching the expire date (within 1 mounth)
+	// For example, if the expire date is 2021-12-31, it will alert betweem 2021-12-01 to 2021-12-31
     public List<ItemAPI> getAllExpItem(){
         Inventory inventory = Inventory.getInstance();
         List<ItemAPI> list = inventory.getItemAll();

@@ -20,6 +20,8 @@ public class AnnualReview implements Observer{
 
     /**
      * Get the employees that should be under annual review.
+	 * It will alart all the employee that is approaching the hire date (within 1 mounth, neglect year)
+	 * For example, if the hire date is 2020-12-31, it will alert betweem xxxx-12-01 to xxxx-12-31
      * @return
      */
     public List<Employee> alertAnnualReview(){
