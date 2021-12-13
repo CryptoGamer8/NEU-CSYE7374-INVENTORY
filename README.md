@@ -21,7 +21,12 @@ The assignment of Final Inventory and Personnel Project.
 
 ## Authors
 
-Kan Zhang	Linghao Du	Yang Song	Yiwei He	Yuchen Bao	Xuliang Mei
+* Kan Zhang	
+* Linghao Du	
+* Yang Song	
+* Yiwei He	
+* Yuchen Bao	
+* Xuliang Mei
 
 ## License
 
