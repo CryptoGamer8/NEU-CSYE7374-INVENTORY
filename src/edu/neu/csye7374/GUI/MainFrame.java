@@ -285,7 +285,7 @@ public class MainFrame extends JFrame {
 //                    saveButtonInvoice.setEnabled(true);
 //                    createButtonInvoice.setEnabled(false);
                 }else{
-                    clearItemFields();
+                    clearInvoiceFields();
 //                    deleteButtonInvoice.setEnabled(false);
 //                    saveButtonInvoice.setEnabled(false);
 //                    createButtonInvoice.setEnabled(true);
@@ -306,7 +306,7 @@ public class MainFrame extends JFrame {
                     saveButtonInvoice.setEnabled(true);
                     createButtonInvoice.setEnabled(false);
                 }else{
-                    clearItemFields();
+                    clearInvoiceFields();
                     deleteButtonInvoice.setEnabled(false);
                     saveButtonInvoice.setEnabled(false);
                     createButtonInvoice.setEnabled(true);
@@ -347,13 +347,7 @@ public class MainFrame extends JFrame {
 
             }
         });
-        updateButtonInvoice.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // to do
-
-            }
-        });
+        
         deleteButtonInvoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -409,7 +403,7 @@ public class MainFrame extends JFrame {
         }
     }
     private void initInvoiceList(){
-//        invoiceListModel.removeAllElements();
+        invoiceListModel.removeAllElements();
         invoices = order.getAllInvoice();
         for(InvoiceAPI invoice : invoices) {
             System.out.println("adding invoice: " + invoice.getId());
