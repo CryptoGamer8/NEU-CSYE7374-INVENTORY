@@ -529,7 +529,7 @@ public class MainFrame extends JFrame {
         invoices = order.getAllInvoice();
         for(InvoiceAPI invoice : invoices) {
             System.out.println("adding invoice: " + invoice.getId());
-            invoiceListModel.addElement(invoice.getId() + ": " + invoice.getId());
+            invoiceListModel.addElement(invoice.getId() + ": " + invoice.getItemId()+ ": " + invoice.getPurchaseDate());
         }
     }
 
