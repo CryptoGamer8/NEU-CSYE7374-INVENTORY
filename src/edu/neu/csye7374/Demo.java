@@ -19,7 +19,7 @@ public class Demo {
         Inventory inventory = Inventory.getInstance(); // Singleton pattern.
         inventory.clearAll();
         ItemFactory factory = ItemFactory.getInstance(); // Singleton pattern and Factory pattern.
-        ItemAPI item1 = factory.produceItem(1,"Cup","2012-09-30","2021-12-02",10.0,"Boston");
+        ItemAPI item1 = factory.produceItem(1,"Cup","2012-09-30","2021-12-30",10.0,"Boston");
         ItemAPI item2 = factory.produceItem(2,"Tissue","2012-09-30","2025-08-10",5.0,"New York");
         inventory.appendItem(item1);
         inventory.appendItem(item2);
@@ -37,7 +37,7 @@ public class Demo {
         Personnel personnel = Personnel.getInstance(); // Singleton pattern.
         personnel.clearAll();
         PersonFactory personFactory = PersonFactory.getInstance(); // Singleton pattern and Factory pattern.
-        Employee e1 = personFactory.produceEmployee(1,30,"John",20000.0,"2021-11-20");
+        Employee e1 = personFactory.produceEmployee(1,30,"John",20000.0,"2021-12-20");
         Employee e2 = personFactory.produceEmployee(2,30,"Peter",40000.0,"2020-11-20");
         personnel.appendEmployee(e1);
         personnel.appendEmployee(e2);
