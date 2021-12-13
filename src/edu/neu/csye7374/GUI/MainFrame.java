@@ -8,6 +8,7 @@ import edu.neu.csye7374.Observer.AnnualReview;
 import edu.neu.csye7374.Observer.TodayDate;
 import edu.neu.csye7374.Observer.TrackExp;
 import edu.neu.csye7374.Order.Invoice;
+import edu.neu.csye7374.Order.InvoiceAPI;
 import edu.neu.csye7374.Order.InvoiceFactory;
 import edu.neu.csye7374.Order.Order;
 import edu.neu.csye7374.Personnel.Employee;
@@ -57,17 +58,17 @@ public class MainFrame extends JFrame {
     private JButton updateButtonInvoice;
     private JButton newButtonInvoice;
     private JButton allButtonInvoice;
-    private JList inventoryListOrder;
-    private JList invoiceList;
+    private JList<String> inventoryListOrder;
+    private JList<String> invoiceList;
     private JTextField itemIDOrder;
     private JTextField itemNameOrder;
     private JTextField itemPriceOrder;
     private JLabel invoiceStatus;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
-    private JButton button1;
-    private JButton button2;
+    private JTextField invoiceID;
+    private JTextField invoiceEmployeID;
+    private JTextField invoicePurchaseDate;
+    private JButton createButtonInvoice;
+    private JButton saveButtonInvoice;
     // data related fields
     private DefaultListModel<String> itemListModel;
     private Inventory inventory;
@@ -85,7 +86,7 @@ public class MainFrame extends JFrame {
     private DefaultListModel invoiceListModel;
     private Order order;
     private InvoiceFactory invoiceFactory;
-    private List<Invoice> invoices;
+    private List<InvoiceAPI> invoices;
     private final String datePattern = "^\\d{4}-\\d{2}-\\d{2}$";
 
 
@@ -113,6 +114,8 @@ public class MainFrame extends JFrame {
         // order
         order = Order.getInstance();
         invoiceFactory = InvoiceFactory.getInstance();
+        inventoryListOrder.setModel(itemListModel);
+//        initInvoiceList();
 
         // set frame
         setContentPane(MainContainer);
@@ -264,6 +267,113 @@ public class MainFrame extends JFrame {
                 }
             }
         });
+
+
+        //=================================== Order==============================
+        inventoryListOrder.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                String val = inventoryListOrder.getSelectedValue();
+                if(val != null){
+                    String[] temp = val.split(": ");
+                    int itemID = Integer.parseInt(temp[0]);
+                    ItemAPI item = inventory.getItem(itemID);
+                    populateItem(item);
+//                    deleteButtonInvoice.setEnabled(true);
+//                    saveButtonInvoice.setEnabled(true);
+//                    createButtonInvoice.setEnabled(false);
+                }else{
+                    clearItemFields();
+//                    deleteButtonInvoice.setEnabled(false);
+//                    saveButtonInvoice.setEnabled(false);
+//                    createButtonInvoice.setEnabled(true);
+                }
+            }
+
+        });
+        invoiceList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                String val = invoiceList.getSelectedValue();
+                if(val != null){
+                    String[] temp = val.split(": ");
+                    int invoiceID = Integer.parseInt(temp[0]);
+                    InvoiceAPI invoice = order.getInvoice(invoiceID);
+                    populateInvoice(invoice);
+                    deleteButtonInvoice.setEnabled(true);
+                    saveButtonInvoice.setEnabled(true);
+                    createButtonInvoice.setEnabled(false);
+                }else{
+                    clearItemFields();
+                    deleteButtonInvoice.setEnabled(false);
+                    saveButtonInvoice.setEnabled(false);
+                    createButtonInvoice.setEnabled(true);
+                }
+            }
+        });
+        createButtonInvoice.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // to do
+                InvoiceAPI invoice = validateInvoice(true);
+                if(invoice != null && invoice.getId() != -1){
+                    order.appendInvoice(invoice);
+                    initInvoiceList();
+                    invoiceStatus.setText("Create Success!");
+                }
+
+            }
+        });
+        saveButtonInvoice.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // to do
+                InvoiceAPI invoice = validateInvoice(false);
+                if(invoice != null && invoice.getId() != -1){
+                    int id = invoice.getId();
+                    order.updateInvoice(id, invoice);
+                    initInvoiceList();
+                    invoiceStatus.setText("Update Success!");
+                }
+
+            }
+        });
+        newButtonInvoice.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                invoiceList.clearSelection();
+
+            }
+        });
+        updateButtonInvoice.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // to do
+
+            }
+        });
+        deleteButtonInvoice.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String val = invoiceList.getSelectedValue();
+                int idx = invoiceList.getSelectedIndex();
+                if(val != null){
+                    String[] temp = val.split(": ");
+                    int invoiceID = Integer.parseInt(temp[0]);
+                    order.deleteInvoice(invoiceID);
+                    clearInvoiceFields();
+                    invoiceListModel.remove(idx);
+                    invoiceStatus.setText("Delete Success!");
+                }
+            }
+        });
+        allButtonInvoice.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // to do
+
+            }
+        });
     }
 
     //====================== helper functions =======================//
@@ -294,6 +404,48 @@ public class MainFrame extends JFrame {
             itemDestination.setText(locs[1]);
         }else{
             itemDestination.setText("");
+        }
+    }
+    private void initInvoiceList(){
+//        invoiceListModel.removeAllElements();
+        invoices = order.getAllInvoice();
+        for(InvoiceAPI invoice : invoices) {
+            System.out.println("adding invoice: " + invoice.getId());
+            invoiceListModel.addElement(invoice.getId() + ": " + invoice.getId());
+        }
+    }
+
+    private void populateInvoice(InvoiceAPI invoice) {
+        invoiceID.setText(String.valueOf(invoice.getId()));
+        invoiceEmployeID.setText(String.valueOf(invoice.getEmployeeId()));
+        invoicePurchaseDate.setText(String.valueOf(invoice.getPurchaseDate()));
+
+    }
+
+    private InvoiceAPI validateInvoice(boolean ifCreate) {
+        try{
+            int id = Integer.parseInt(invoiceID.getText());
+            int itId = Integer.parseInt(itemIDOrder.getText());
+            int employeID = Integer.parseInt(invoiceEmployeID.getText());
+            String PD = invoicePurchaseDate.getText();
+            boolean pdCheck = Pattern.compile(datePattern).matcher(PD).matches();
+            if(!pdCheck) throw new Exception("PD Date format wrong");
+            if(ifCreate){
+                return invoiceFactory.produceInvoice(id, itId, 1, 1, PD);
+            } else {
+                InvoiceAPI invoice = new Invoice();
+                invoice.setId(id);
+                invoice.setClientId(1);
+                invoice.setEmployeeId(employeID);
+                invoice.setPurchaseDate(PD);
+                return invoice;
+            }
+
+        } catch (Exception e){
+            invoiceStatus.setText(e.getMessage());
+            System.out.println("Error!" + e.getMessage());
+            return null;
+
         }
     }
 
@@ -340,5 +492,11 @@ public class MainFrame extends JFrame {
         itemPrice.setText("");
         itemDestination.setText("");
         itemLocation.setText("");
+    }
+
+    private void clearInvoiceFields(){
+        invoiceID.setText("");
+        invoiceEmployeID.setText("");
+        invoicePurchaseDate.setText("");
     }
 }
