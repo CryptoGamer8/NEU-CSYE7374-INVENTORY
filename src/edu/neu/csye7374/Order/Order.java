@@ -75,6 +75,9 @@ public class Order implements OrderAPI {
         return null;
     }
 
+    /**
+     * Load all Invoice from .csv file to memory. 
+     */
     @Override
     public List<InvoiceAPI> getAllInvoice() {
         List<InvoiceAPI> list = new ArrayList<>();

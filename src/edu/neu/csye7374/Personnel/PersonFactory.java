@@ -51,7 +51,6 @@ public class PersonFactory {
         boolean noEmployee = true;
         for (PersonAPI p : personnel.getAllEmployee()) {
             if (p.getId() == employeeId) {
-                System.out.println(p.getId());
                 noEmployee = false;
                 break;
             }

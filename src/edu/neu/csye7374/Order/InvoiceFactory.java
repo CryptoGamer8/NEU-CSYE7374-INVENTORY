@@ -37,21 +37,18 @@ public class InvoiceFactory {
     }
 
     private boolean validationCheck(int itemId, int employeeId) {
-        System.out.println("Check");
         Inventory inventory = Inventory.getInstance();
         Personnel personnel = Personnel.getInstance();
         boolean hasItem = false;
         boolean hasEmployee = false;
         for (ItemAPI i : inventory.getItemAll()) {
             if (i.getId() == itemId) {
-                System.out.println(i.getId());
                 hasItem = true;
                 break;
             }
         }
         for (PersonAPI p : personnel.getAllEmployee()) {
             if (p.getId() == employeeId) {
-                System.out.println(p.getId());
                 hasEmployee = true;
                 break;
             }

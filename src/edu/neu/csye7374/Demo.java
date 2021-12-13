@@ -13,7 +13,7 @@ import edu.neu.csye7374.Personnel.PersonFactory;
 import edu.neu.csye7374.Personnel.Personnel;
 
 /**
- * 存在问题 - （future enhancements)
+  * 存在问题 - （future enhancements)
  * Date format: "xxxx-xx-xx"
  * File: create three file first "personnel.csv", "order.csv", "inventory.csv"
  * Id: 要自己手动输入，查询或删除不存在的id可能会出错. 没有验证。
@@ -30,26 +30,27 @@ import edu.neu.csye7374.Personnel.Personnel;
 
 public class Demo {
     public static void demo() {
-        Inventory inventory = Inventory.getInstance();
+        Inventory inventory = Inventory.getInstance(); // Singleton pattern.
         inventory.clearAll();
-        ItemFactory factory = ItemFactory.getInstance();
+        ItemFactory factory = ItemFactory.getInstance(); // Singleton pattern and Factory pattern.
         ItemAPI item1 = factory.produceItem(1,"Cup","2012-09-30","2021-12-02",10.0,"Boston");
         ItemAPI item2 = factory.produceItem(2,"Tissue","2012-09-30","2025-08-10",5.0,"New York");
         inventory.appendItem(item1);
         inventory.appendItem(item2);
-        ItemAPI item3 = factory.produceItem(2,"aaa","2013-09-30","2024-08-10",5.0,"New York");
+        ItemAPI item3 = factory.produceItem(2,"aaa","2013-09-30","2024-08-10",5.0,"New York"); // This will create an item with id -1.
         if (item3.getId() == -1) {
             System.out.println("id of item3 is already exist");
         }
-        inventory.addLocationToItem(1,"New York");
+        inventory.addLocationToItem(1,"New York"); // add " -- New York" to item location.
         System.out.println(inventory.trackItem(1));
 //        inventory.deleteItem(1);
 //        inventory.updateItem(1,item2);
 //        System.out.println(inventory.getItemAll());
+        System.out.println("-------------------------------------------------------------");
 
-        Personnel personnel = Personnel.getInstance();
+        Personnel personnel = Personnel.getInstance(); // Singleton pattern.
         personnel.clearAll();
-        PersonFactory personFactory = PersonFactory.getInstance();
+        PersonFactory personFactory = PersonFactory.getInstance(); // Singleton pattern and Factory pattern.
         Employee e1 = personFactory.produceEmployee(1,30,"John",20000.0,"2021-11-20");
         Employee e2 = personFactory.produceEmployee(2,30,"Peter",40000.0,"2020-11-20");
         personnel.appendEmployee(e1);
@@ -58,20 +59,23 @@ public class Demo {
 //        personnel.updateEmployee(1,e2);
 //        System.out.println(personnel.getEmployee(1));
         System.out.println(personnel.getAllEmployee());
+        System.out.println("-------------------------------------------------------------");
 
-        TodayDate tdate = new TodayDate();
-        TrackExp trackExp = new TrackExp();
-        AnnualReview annualReview = new AnnualReview();
+        TodayDate tdate = new TodayDate(); // Observable
+        TrackExp trackExp = new TrackExp(); // Observer
+        AnnualReview annualReview = new AnnualReview(); // Observer
         tdate.register(trackExp);
         tdate.register(annualReview);
         tdate.setDate("2021-12-02");
 //
         System.out.println(trackExp.getAllExpItem());
         System.out.println(annualReview.alertAnnualReview());
+        System.out.println("-------------------------------------------------------------");
 
-        Order order = Order.getInstance();
+        Order order = Order.getInstance(); // Singleton pattern.
         order.clearAll();
-        InvoiceFactory invoiceFactory = InvoiceFactory.getInstance();
+        InvoiceFactory invoiceFactory = InvoiceFactory.getInstance(); // Singleton pattern and Factory pattern.
+        // Parameters: (int id, int itemId, int clientId, int employeeId, String purchaseDate)
         InvoiceAPI invoice1 = invoiceFactory.produceInvoice(1,1,1,1,"2020-12-20");
         InvoiceAPI invoice2 = invoiceFactory.produceInvoice(2,2,2,2,"2020-12-20");
         order.appendInvoice(invoice1);

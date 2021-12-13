@@ -44,7 +44,6 @@ public class ItemFactory {
         boolean noItem = true;
         for (ItemAPI i : inventory.getItemAll()) {
             if (i.getId() == itemId) {
-                System.out.println(i.getId());
                 noItem = false;
                 break;
             }
