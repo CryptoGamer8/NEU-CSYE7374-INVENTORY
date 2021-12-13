@@ -12,6 +12,8 @@ import edu.neu.csye7374.Personnel.Employee;
 import edu.neu.csye7374.Personnel.PersonFactory;
 import edu.neu.csye7374.Personnel.Personnel;
 
+import java.time.LocalDate;
+
 /**
  * 存在问题 - （future enhancements)
  * Date format: "xxxx-xx-xx"
